@@ -1,4 +1,4 @@
-export const xmlFile=`
+
 <ENVELOPE>
  <HEADER>
   <TALLYREQUEST>Import Data</TALLYREQUEST>
@@ -15286,4 +15286,3 @@ export const xmlFile=`
   </IMPORTDATA>
  </BODY>
 </ENVELOPE>
-`
