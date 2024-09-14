@@ -1,18 +1,18 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import TextField from "@mui/material/TextField";
-import Autocomplete, {autocompleteClasses} from "@mui/material/Autocomplete";
+import Autocomplete, { autocompleteClasses } from "@mui/material/Autocomplete";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ListSubheader from "@mui/material/ListSubheader";
 import Popper from "@mui/material/Popper";
-import {useTheme, styled} from "@mui/material/styles";
-import {VariableSizeList} from "react-window";
+import { useTheme, styled } from "@mui/material/styles";
+import { VariableSizeList } from "react-window";
 import Typography from "@mui/material/Typography";
 
 const LISTBOX_PADDING = 8; // px
 
 function renderRow(props) {
-  const {data, index, style} = props;
+  const { data, index, style } = props;
   const dataSet = data[index];
   const inlineStyle = {
     ...style,
@@ -27,7 +27,7 @@ function renderRow(props) {
     );
   }
 
-  const {key, ...optionProps} = dataSet[0];
+  const { key, ...optionProps } = dataSet[0];
 
   return (
     <Typography
@@ -64,7 +64,7 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(
   props,
   ref
 ) {
-  const {children, ...other} = props;
+  const { children, ...other } = props;
   const itemData = [];
   children.forEach((item) => {
     itemData.push(item);
@@ -147,12 +147,12 @@ const OPTIONS = Array.from(new Array(10000))
   .sort((a, b) => a.toUpperCase().localeCompare(b.toUpperCase()));
 
 export default function Virtualize(props) {
-  const {optionsArray, value, onChange} = props;
+  const { id, optionsArray, value, onChange, onKeyUp } = props;
   return (
     <Autocomplete
-      id="virtualized-autoComplete"
+      id={id}
       size="small"
-      sx={{width: 300}}
+      sx={{ width: 300 }}
       disableListWrap
       options={optionsArray}
       // groupBy={(option) => option[0].toUpperCase()}
@@ -169,6 +169,7 @@ export default function Virtualize(props) {
       // }}
       value={value}
       onChange={onChange}
+      onKeyUp={onKeyUp}
     />
   );
 }
