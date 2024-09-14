@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
+import { partyList } from "./parties";
+import dayjs from "dayjs";
 
 const ExcelToXmlViewModel = () => {
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState(dayjs);
   const [xmlOutPut, setXmlOutput] = useState(null);
+  const ledgerList = [...partyList?.map((ob) => ob?.DESC_ENG)];
 
   const jsonToXml = (jsonDataArray) => {
     const voucherXmlTag = () => {
@@ -11,15 +14,19 @@ const ExcelToXmlViewModel = () => {
       jsonDataArray?.map((item) => {
         xmlTag = `${xmlTag}
             <TALLYMESSAGE xmlns:UDF="TallyUDF">
-     <VOUCHER REMOTEID="${item?.REMOTEID}" VCHKEY="${item?.VCHKEY}" VCHTYPE="${item?.VCHTYPE}" ACTION="Create" OBJVIEW="Accounting Voucher View">
+     <VOUCHER REMOTEID="${item?.REMOTEID || ""}" VCHKEY="${
+          item?.VCHKEY || ""
+        }" VCHTYPE="${
+          item?.VCHTYPE || ""
+        }" ACTION="Create" OBJVIEW="Accounting Voucher View">
       <OLDAUDITENTRYIDS.LIST TYPE="Number">
        <OLDAUDITENTRYIDS>-1</OLDAUDITENTRYIDS>
       </OLDAUDITENTRYIDS.LIST>
-      <DATE>${item?.DATE}</DATE>
-      <GUID>${item?.REMOTEID}</GUID>
-      <VOUCHERTYPENAME>${item?.VCHTYPE}</VOUCHERTYPENAME>
-      <VOUCHERNUMBER>${item?.VOUCHERNUMBER}</VOUCHERNUMBER>
-      <PARTYLEDGERNAME>${item?.PARTYLEDGERNAME}</PARTYLEDGERNAME>
+      <DATE>${item?.DATE || ""}</DATE>
+      <GUID>${item?.REMOTEID || ""}</GUID>
+      <VOUCHERTYPENAME>${item?.TYPE || ""}</VOUCHERTYPENAME>
+      <VOUCHERNUMBER>${item?.VOUCHER || ""}</VOUCHERNUMBER>
+      <PARTYLEDGERNAME>${item?.LEDGER || ""}</PARTYLEDGERNAME>
       <CSTFORMISSUETYPE/>
       <CSTFORMRECVTYPE/>
       <FBTPAYMENTTYPE>Default</FBTPAYMENTTYPE>
@@ -37,7 +44,7 @@ const ExcelToXmlViewModel = () => {
       <USEFORGAINLOSS>No</USEFORGAINLOSS>
       <USEFORGODOWNTRANSFER>No</USEFORGODOWNTRANSFER>
       <USEFORCOMPOUND>No</USEFORCOMPOUND>
-      <ALTERID> ${item?.VOUCHERNUMBER}</ALTERID>
+      <ALTERID> ${item?.VOUCHER || ""}</ALTERID>
       <EXCISEOPENING>No</EXCISEOPENING>
       <USEFORFINALPRODUCTION>No</USEFORFINALPRODUCTION>
       <ISCANCELLED>No</ISCANCELLED>
@@ -57,8 +64,8 @@ const ExcelToXmlViewModel = () => {
       <ISDELETED>No</ISDELETED>
       <ASORIGINAL>No</ASORIGINAL>
       <VCHISFROMSYNC>No</VCHISFROMSYNC>
-      <MASTERID> ${item?.VOUCHERNUMBER}</MASTERID>
-      <VOUCHERKEY>${item?.VOUCHERKEY}</VOUCHERKEY>
+      <MASTERID> ${item?.VOUCHER || ""}</MASTERID>
+      <VOUCHERKEY>${item?.VOUCHERKEY || ""}</VOUCHERKEY>
       <OLDAUDITENTRIES.LIST>      </OLDAUDITENTRIES.LIST>
       <ACCOUNTAUDITENTRIES.LIST>      </ACCOUNTAUDITENTRIES.LIST>
       <AUDITENTRIES.LIST>      </AUDITENTRIES.LIST>
@@ -96,7 +103,7 @@ const ExcelToXmlViewModel = () => {
        <OLDAUDITENTRYIDS.LIST TYPE="Number">
         <OLDAUDITENTRYIDS>-1</OLDAUDITENTRYIDS>
        </OLDAUDITENTRYIDS.LIST>
-       <LEDGERNAME>${item?.LEDGERNAME}</LEDGERNAME>
+       <LEDGERNAME>${item?.LEDGER}</LEDGERNAME>
        <GSTCLASS/>
        <ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>
        <LEDGERFROMITEM>No</LEDGERFROMITEM>
@@ -153,10 +160,10 @@ const ExcelToXmlViewModel = () => {
     pom.dataset.downloadurl = ["text/plain", pom.download, pom.href].join(":");
     pom.draggable = true;
     pom.classList.add("dragout");
-    setXmlOutput(pom)
+    setXmlOutput(pom);
   };
 
-  const [jsonData, setJasonData] = useState(null);
+  const [jsonData, setJasonData] = useState([{}]);
   const [selectedFile, setSelectedFile] = useState();
 
   const handleFileUpload = async (e) => {
@@ -172,17 +179,17 @@ const ExcelToXmlViewModel = () => {
     setJasonData(sheetData);
   };
 
-  useEffect(() => {
-    jsonData?.length && jsonToXml(jsonData);
-  }, [jsonData]);
-
   return {
+    jsonToXml,
     xmlOutPut,
     date,
     setDate,
     handleFileUpload,
     selectedFile,
     setSelectedFile,
+    jsonData,
+    setJasonData,
+    ledgerList,
   };
 };
 export default ExcelToXmlViewModel;

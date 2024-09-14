@@ -2,6 +2,8 @@ import { Box, Tab, Tabs } from "@mui/material";
 import PropTypes from "prop-types";
 import React from "react";
 import ExcelToXml from "./excelToXmlConvertor/excetToXml.view";
+import { DataList } from "./excelToXmlConvertor/dataList";
+import ExcelToXmlViewModel from "./excelToXmlConvertor/excelToXml.vm";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -33,6 +35,8 @@ function a11yProps(index) {
 }
 
 export default function App() {
+  const vm = ExcelToXmlViewModel();
+
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -47,19 +51,15 @@ export default function App() {
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
+          <Tab label="Home" {...a11yProps(0)} />
+          <Tab label="Edit Table" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <ExcelToXml />
+        <ExcelToXml vm={vm} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        Item Two
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        Item Three
+        <DataList vm={vm} />
       </CustomTabPanel>
     </Box>
   );

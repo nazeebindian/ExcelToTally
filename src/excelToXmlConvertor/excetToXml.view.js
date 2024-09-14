@@ -4,8 +4,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-const ExcelToXml = () => {
-  const vm = ExcelToXmlViewModel();
+const ExcelToXml = (props) => {
+  const { vm } = props;
   const FileUpload = () => (
     <div style={{ position: "absolute" }}>
       <input
@@ -35,7 +35,14 @@ const ExcelToXml = () => {
         }}
       />
       {vm?.selectedFile && <p>Selected file: {vm?.selectedFile.name}</p>}
-      <Button variant="contained" sx={{ m: 5 }}>
+      <Button
+        variant="contained"
+        sx={{ m: 5 }}
+        disabled={vm?.jsonData?.length < 2}
+        onClick={() => {
+          vm?.jsonToXml(vm?.jsonData);
+        }}
+      >
         Convert to tally xml file
       </Button>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
