@@ -52,14 +52,10 @@ export default function App() {
           aria-label="basic tabs example"
         >
           <Tab label="Home" {...a11yProps(0)} />
-          <Tab label="Edit Table" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
         <ExcelToXml vm={vm} />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        <DataList vm={vm} />
       </CustomTabPanel>
     </Box>
   );

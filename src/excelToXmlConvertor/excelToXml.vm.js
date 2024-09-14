@@ -176,7 +176,20 @@ const ExcelToXmlViewModel = () => {
     const sheetName = workbook.SheetNames[0];
     const sheet = workbook.Sheets[sheetName];
     const sheetData = XLSX.utils.sheet_to_json(sheet);
-    setJasonData(sheetData);
+    console.log("==", sheetData);
+    setJasonData([
+      ...sheetData?.map((item, i) => ({
+        "#": i + 1,
+        // DATE: item?.DATE || null,
+        ACCOUNT: item?.ACCOUNT || "",
+        LEDGER: item?.LEDGER || "",
+        TYPE: item?.TYPE || "",
+        AMOUNT: item?.AMOUNT || 0,
+        NARRATION: item?.NARRATION || "",
+        CHECK_NO: item?.CHECK_NO || "",
+        CHECK_DATE: item?.CHECK_DATE || "",
+      })),
+    ]);
   };
 
   return {
