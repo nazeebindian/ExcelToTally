@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import { partyList } from "./parties";
 import dayjs from "dayjs";
+import moment from "moment/moment";
 
 const ExcelToXmlViewModel = () => {
   const [date, setDate] = useState(dayjs);
@@ -13,7 +14,7 @@ const ExcelToXmlViewModel = () => {
       let xmlTag = "";
       jsonDataArray?.map((item) => {
         xmlTag = `${xmlTag}
-            <TALLYMESSAGE xmlns:UDF="TallyUDF">
+                <TALLYMESSAGE xmlns:UDF="TallyUDF">
      <VOUCHER REMOTEID="${item?.REMOTEID || ""}" VCHKEY="${
           item?.VCHKEY || ""
         }" VCHTYPE="${
@@ -24,8 +25,9 @@ const ExcelToXmlViewModel = () => {
       </OLDAUDITENTRYIDS.LIST>
       <DATE>${item?.DATE || ""}</DATE>
       <GUID>${item?.REMOTEID || ""}</GUID>
-      <VOUCHERTYPENAME>${item?.TYPE || ""}</VOUCHERTYPENAME>
-      <VOUCHERNUMBER>${item?.VOUCHER || ""}</VOUCHERNUMBER>
+      <NARRATION>${item?.NARRATION || ""}</NARRATION>
+      <VOUCHERTYPENAME>${item?.VCHTYPE || ""}</VOUCHERTYPENAME>
+      <VOUCHERNUMBER>${item?.VOUCHERNUMBER || ""}</VOUCHERNUMBER>
       <PARTYLEDGERNAME>${item?.LEDGER || ""}</PARTYLEDGERNAME>
       <CSTFORMISSUETYPE/>
       <CSTFORMRECVTYPE/>
@@ -37,14 +39,14 @@ const ExcelToXmlViewModel = () => {
       <AUDITED>No</AUDITED>
       <FORJOBCOSTING>No</FORJOBCOSTING>
       <ISOPTIONAL>No</ISOPTIONAL>
-      <EFFECTIVEDATE>${item?.DATE}</EFFECTIVEDATE>
+      <EFFECTIVEDATE>${item?.DATE || ""}</EFFECTIVEDATE>
       <ISFORJOBWORKIN>No</ISFORJOBWORKIN>
       <ALLOWCONSUMPTION>No</ALLOWCONSUMPTION>
       <USEFORINTEREST>No</USEFORINTEREST>
       <USEFORGAINLOSS>No</USEFORGAINLOSS>
       <USEFORGODOWNTRANSFER>No</USEFORGODOWNTRANSFER>
       <USEFORCOMPOUND>No</USEFORCOMPOUND>
-      <ALTERID> ${item?.VOUCHER || ""}</ALTERID>
+      <ALTERID> ${item?.ALTERID || ""}</ALTERID>
       <EXCISEOPENING>No</EXCISEOPENING>
       <USEFORFINALPRODUCTION>No</USEFORFINALPRODUCTION>
       <ISCANCELLED>No</ISCANCELLED>
@@ -64,7 +66,7 @@ const ExcelToXmlViewModel = () => {
       <ISDELETED>No</ISDELETED>
       <ASORIGINAL>No</ASORIGINAL>
       <VCHISFROMSYNC>No</VCHISFROMSYNC>
-      <MASTERID> ${item?.VOUCHER || ""}</MASTERID>
+      <MASTERID> ${item?.MASTERID || ""}</MASTERID>
       <VOUCHERKEY>${item?.VOUCHERKEY || ""}</VOUCHERKEY>
       <OLDAUDITENTRIES.LIST>      </OLDAUDITENTRIES.LIST>
       <ACCOUNTAUDITENTRIES.LIST>      </ACCOUNTAUDITENTRIES.LIST>
@@ -79,14 +81,18 @@ const ExcelToXmlViewModel = () => {
        <OLDAUDITENTRYIDS.LIST TYPE="Number">
         <OLDAUDITENTRYIDS>-1</OLDAUDITENTRYIDS>
        </OLDAUDITENTRYIDS.LIST>
-       <LEDGERNAME>PIPE INDIA</LEDGERNAME>
+       <LEDGERNAME>${item?.LEDGER || ""}</LEDGERNAME>
        <GSTCLASS/>
-       <ISDEEMEDPOSITIVE>Yes</ISDEEMEDPOSITIVE>
+       <ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>
        <LEDGERFROMITEM>No</LEDGERFROMITEM>
        <REMOVEZEROENTRIES>No</REMOVEZEROENTRIES>
        <ISPARTYLEDGER>Yes</ISPARTYLEDGER>
-       <ISLASTDEEMEDPOSITIVE>Yes</ISLASTDEEMEDPOSITIVE>
-       <AMOUNT>-${item?.AMOUNT}</AMOUNT>
+       <ISLASTDEEMEDPOSITIVE>${
+         item?.VCHTYPE === "PAYMENT" ? "Yes" : "No"
+       }</ISLASTDEEMEDPOSITIVE>
+       <AMOUNT>${
+         (item?.VCHTYPE === "PAYMENT" ? -1 : 1) * item?.AMOUNT || ""
+       }</AMOUNT>
        <BANKALLOCATIONS.LIST>       </BANKALLOCATIONS.LIST>
        <BILLALLOCATIONS.LIST>       </BILLALLOCATIONS.LIST>
        <INTERESTCOLLECTION.LIST>       </INTERESTCOLLECTION.LIST>
@@ -103,15 +109,47 @@ const ExcelToXmlViewModel = () => {
        <OLDAUDITENTRYIDS.LIST TYPE="Number">
         <OLDAUDITENTRYIDS>-1</OLDAUDITENTRYIDS>
        </OLDAUDITENTRYIDS.LIST>
-       <LEDGERNAME>${item?.LEDGER}</LEDGERNAME>
+       <LEDGERNAME>${item?.LEDGER || ""}</LEDGERNAME>
        <GSTCLASS/>
-       <ISDEEMEDPOSITIVE>No</ISDEEMEDPOSITIVE>
+       <ISDEEMEDPOSITIVE>Yes</ISDEEMEDPOSITIVE>
        <LEDGERFROMITEM>No</LEDGERFROMITEM>
        <REMOVEZEROENTRIES>No</REMOVEZEROENTRIES>
        <ISPARTYLEDGER>Yes</ISPARTYLEDGER>
-       <ISLASTDEEMEDPOSITIVE>No</ISLASTDEEMEDPOSITIVE>
-       <AMOUNT>${item?.AMOUNT}</AMOUNT>
-       <BANKALLOCATIONS.LIST>       </BANKALLOCATIONS.LIST>
+       <ISLASTDEEMEDPOSITIVE>Yes</ISLASTDEEMEDPOSITIVE>
+       <AMOUNT>${
+         (item?.VCHTYPE === "PAYMENT" ? 1 : -1) * item?.AMOUNT || ""
+       }</AMOUNT>
+${
+  item?.CHEQUE_NO
+    ? `       <BANKALLOCATIONS.LIST>
+        <DATE>${item?.DATE || ""}</DATE>
+        <INSTRUMENTDATE>${item?.CHEQUE_DATE || ""}</INSTRUMENTDATE>
+        <NAME>b8dbf402-9248-4a71-9966-4fadeed3036f</NAME>
+        <TRANSACTIONTYPE>Cheque/DD</TRANSACTIONTYPE>
+        ${item?.BANKNAME && `<BANKNAME>${item?.BANKNAME || ""}</BANKNAME>`}
+        ${
+          item?.BANKBRANCHNAME &&
+          `<BANKBRANCHNAME>${item?.BANKBRANCHNAME || ""}</BANKBRANCHNAME>`
+        }
+        <PAYMENTFAVOURING>${item?.LEDGER || ""}</PAYMENTFAVOURING>
+        <INSTRUMENTNUMBER>${item?.CHEQUE_NO || ""}</INSTRUMENTNUMBER>
+        <UNIQUEREFERENCENUMBER>${
+          item?.UNIQUEREFERENCENUMBER || ""
+        }</UNIQUEREFERENCENUMBER>
+        <STATUS>No</STATUS>
+        <PAYMENTMODE>Transacted</PAYMENTMODE>
+        <BANKPARTYNAME>${item?.LEDGER || ""}</BANKPARTYNAME>
+        <ISCONNECTEDPAYMENT>No</ISCONNECTEDPAYMENT>
+        <ISSPLIT>No</ISSPLIT>
+        <ISCONTRACTUSED>No</ISCONTRACTUSED>
+        <AMOUNT>${
+          (item?.VCHTYPE === "PAYMENT" ? 1 : -1) * item?.AMOUNT || ""
+        }</AMOUNT>
+        <CONTRACTDETAILS.LIST>        </CONTRACTDETAILS.LIST>
+       </BANKALLOCATIONS.LIST>
+`
+    : `<BANKALLOCATIONS.LIST>       </BANKALLOCATIONS.LIST>`
+}
        <BILLALLOCATIONS.LIST>       </BILLALLOCATIONS.LIST>
        <INTERESTCOLLECTION.LIST>       </INTERESTCOLLECTION.LIST>
        <OLDAUDITENTRIES.LIST>       </OLDAUDITENTRIES.LIST>
@@ -150,7 +188,7 @@ const ExcelToXmlViewModel = () => {
  </BODY>
 </ENVELOPE>`;
 
-    const filename = `${date}.xml`;
+    const filename = `${moment(new Date(date))?.format("YYYYMMDD")}.xml`;
     const pom = document.createElement("a");
     const bb = new Blob([elementXML], { type: "text/plain" });
 
@@ -163,7 +201,27 @@ const ExcelToXmlViewModel = () => {
     setXmlOutput(pom);
   };
 
-  const [jsonData, setJasonData] = useState([{}]);
+  const [jsonData, setJasonData] = useState([
+    {
+      DATE: "",
+      NARRATION: "",
+      LEDGER: "",
+      AMOUNT: "",
+      VCHTYPE: "",
+      CHEQUE_NO: "",
+      CHEQUE_DATE: "",
+      BANKNAME: "",
+      BANKBRANCHNAME: "",
+      NAME: "b8dbf402-9248-4a71-9966-4fadeed3036f", // encoded ? not mandatory?
+      // REMOTEID: "", "c91b8fc0-df86-11db-aec0-001111bb672d-0002d29e" not mandatory?
+      // VCHKEY: "", "c91b8fc0-df86-11db-aec0-001111bb672d-0000acfe:00000178" not mandatory?
+      // VOUCHERNUMBER: "", 1 // not mandatory?
+      // ALTERID: "",// 197785  // not mandatory ?
+      // MASTERID: "", // 184990 not mandatory
+      // VOUCHERKEY: "", // 190206921671032  not mandatory
+      // UNIQUEREFERENCENUMBER: "", 5vbgkYN0hxqpMDfN // not mandatory
+    },
+  ]);
   const [selectedFile, setSelectedFile] = useState();
 
   const handleFileUpload = async (e) => {
@@ -176,18 +234,18 @@ const ExcelToXmlViewModel = () => {
     const sheetName = workbook.SheetNames[0];
     const sheet = workbook.Sheets[sheetName];
     const sheetData = XLSX.utils.sheet_to_json(sheet);
-    console.log("==", sheetData);
     setJasonData([
       ...sheetData?.map((item, i) => ({
         "#": i + 1,
-        // DATE: item?.DATE || null,
-        ACCOUNT: item?.ACCOUNT || "",
-        LEDGER: item?.LEDGER || "",
-        TYPE: item?.TYPE || "",
-        AMOUNT: item?.AMOUNT || 0,
+        DATE: item?.DATE || null,
         NARRATION: item?.NARRATION || "",
-        CHECK_NO: item?.CHECK_NO || "",
-        CHECK_DATE: item?.CHECK_DATE || "",
+        LEDGER: item?.LEDGER || "",
+        AMOUNT: item?.AMOUNT || "",
+        VCHTYPE: item?.VCHTYPE || "",
+        CHEQUE_NO: item?.CHEQUE_NO || "",
+        CHEQUE_DATE: item?.CHEQUE_DATE || "",
+        BANKNAME: item?.BANKNAME || "",
+        BANKBRANCHNAME: item?.BANKBRANCHNAME || "",
       })),
     ]);
   };

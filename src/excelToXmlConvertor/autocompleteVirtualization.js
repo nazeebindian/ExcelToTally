@@ -152,7 +152,7 @@ export default function Virtualize(props) {
     <Autocomplete
       id={id}
       size="small"
-      sx={{ width: 300 }}
+      // sx={{ width: 300 }}
       disableListWrap
       options={optionsArray}
       // groupBy={(option) => option[0].toUpperCase()}
@@ -170,6 +170,7 @@ export default function Virtualize(props) {
       value={value}
       onChange={onChange}
       onKeyUp={onKeyUp}
+      fullWidth
     />
   );
 }

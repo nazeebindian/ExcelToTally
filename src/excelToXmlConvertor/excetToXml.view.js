@@ -4,6 +4,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DataList } from "./dataList";
+import dayjs from "dayjs";
+import { JsonToExcel } from "react-json-to-excel";
+import moment from "moment";
 
 const ExcelToXml = (props) => {
   const { vm } = props;
@@ -27,6 +30,33 @@ const ExcelToXml = (props) => {
         }}
       >
         <h1>Excel to xml</h1>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            format="DD-MM-YYYY"
+            value={vm?.date || null}
+            onChange={(newValue) => vm?.setDate(newValue)}
+          />
+        </LocalizationProvider>
+        <div style={{ height: "20px" }} />
+        <JsonToExcel
+          title="Download as Excel"
+          data={[
+            {
+              DATE: moment(new Date(vm?.date))?.format("YYYYMMDD"),
+              NARRATION: "",
+              LEDGER: "",
+              AMOUNT: "",
+              VCHTYPE: "",
+              CHEQUE_NO: "",
+              CHEQUE_DATE: "",
+              BANKNAME: "",
+              BANKBRANCHNAME: "",
+            },
+          ]}
+          fileName={`${moment(new Date(vm?.date))?.format("YYYYMMDD")}`}
+          btnClassName="custom-classname"
+        />
+        <div style={{ height: "20px" }} />
         <input
           type="file"
           onChange={(e) => {
@@ -38,7 +68,7 @@ const ExcelToXml = (props) => {
           variant="contained"
           sx={{ my: 5 }}
           fullWidth
-          disabled={vm?.jsonData?.length < 2}
+          disabled={vm?.jsonData?.length < 1}
           onClick={() => {
             vm?.jsonToXml(vm?.jsonData);
           }}
