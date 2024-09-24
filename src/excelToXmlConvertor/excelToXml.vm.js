@@ -114,13 +114,13 @@ const ExcelToXmlViewModel = () => {
        <LEDGERNAME>${item?.ACCOUNT || ""}</LEDGERNAME>
        <GSTCLASS/>
        <ISDEEMEDPOSITIVE>${
-        item?.VCHTYPE === "PAYMENT" ? "Yes" : "No"
+        item?.VCHTYPE === "PAYMENT" ? "No" : "Yes"
       }</ISDEEMEDPOSITIVE>
        <LEDGERFROMITEM>No</LEDGERFROMITEM>
        <REMOVEZEROENTRIES>No</REMOVEZEROENTRIES>
        <ISPARTYLEDGER>Yes</ISPARTYLEDGER>
        <ISLASTDEEMEDPOSITIVE>${
-        item?.VCHTYPE === "PAYMENT" ? "Yes" : "No"
+        item?.VCHTYPE === "PAYMENT" ? "No" : "Yes"
       }</ISLASTDEEMEDPOSITIVE>
        <AMOUNT>${
          (item?.VCHTYPE === "PAYMENT" ? 1 : -1) * item?.AMOUNT || ""
