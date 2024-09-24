@@ -109,7 +109,7 @@ const ExcelToXmlViewModel = () => {
        <OLDAUDITENTRYIDS.LIST TYPE="Number">
         <OLDAUDITENTRYIDS>-1</OLDAUDITENTRYIDS>
        </OLDAUDITENTRYIDS.LIST>
-       <LEDGERNAME>${item?.LEDGER || ""}</LEDGERNAME>
+       <LEDGERNAME>${item?.ACCOUNT || ""}</LEDGERNAME>
        <GSTCLASS/>
        <ISDEEMEDPOSITIVE>Yes</ISDEEMEDPOSITIVE>
        <LEDGERFROMITEM>No</LEDGERFROMITEM>
@@ -183,6 +183,15 @@ ${
    </REQUESTDESC>
    <REQUESTDATA>
    ${voucherXmlTag()}
+     <TALLYMESSAGE xmlns:UDF="TallyUDF">
+  <COMPANY>
+   <REMOTECMPINFO.LIST MERGE="Yes">
+    <NAME>fbf1ce26-73d0-41b1-8ac1-025d003ff582</NAME>
+    <REMOTECMPNAME>HASHIM</REMOTECMPNAME>
+    <REMOTECMPSTATE>Kerala</REMOTECMPSTATE>
+   </REMOTECMPINFO.LIST>
+  </COMPANY>
+ </TALLYMESSAGE>
       </REQUESTDATA>
   </IMPORTDATA>
  </BODY>
@@ -206,6 +215,7 @@ ${
       DATE: "",
       NARRATION: "",
       LEDGER: "",
+      ACCOUNT: "",
       AMOUNT: "",
       VCHTYPE: "",
       CHEQUE_NO: "",
@@ -240,6 +250,7 @@ ${
         DATE: item?.DATE || null,
         NARRATION: item?.NARRATION || "",
         LEDGER: item?.LEDGER || "",
+        ACCOUNT: item?.ACCOUNT || "",
         AMOUNT: item?.AMOUNT || "",
         VCHTYPE: item?.VCHTYPE || "",
         CHEQUE_NO: item?.CHEQUE_NO || "",

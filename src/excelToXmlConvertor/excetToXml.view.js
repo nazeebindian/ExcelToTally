@@ -43,14 +43,15 @@ const ExcelToXml = (props) => {
           data={[
             {
               DATE: moment(new Date(vm?.date))?.format("YYYYMMDD"),
-              NARRATION: "",
+              VCHTYPE: "",
+              ACCOUNT:"",
               LEDGER: "",
               AMOUNT: "",
-              VCHTYPE: "",
               CHEQUE_NO: "",
               CHEQUE_DATE: "",
               BANKNAME: "",
               BANKBRANCHNAME: "",
+              NARRATION: "",
             },
           ]}
           fileName={`${moment(new Date(vm?.date))?.format("YYYYMMDD")}`}
