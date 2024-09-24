@@ -12,7 +12,7 @@ const ExcelToXmlViewModel = () => {
   const jsonToXml = (jsonDataArray) => {
     const voucherXmlTag = () => {
       let xmlTag = "";
-      jsonDataArray?.map((item) => {
+      jsonDataArray?.map((item,i) => {
         xmlTag = `${xmlTag}
                 <TALLYMESSAGE xmlns:UDF="TallyUDF">
      <VOUCHER REMOTEID="${item?.REMOTEID || ""}" VCHKEY="${
@@ -124,7 +124,7 @@ ${
     ? `       <BANKALLOCATIONS.LIST>
         <DATE>${item?.DATE || ""}</DATE>
         <INSTRUMENTDATE>${item?.CHEQUE_DATE || ""}</INSTRUMENTDATE>
-        <NAME>b8dbf402-9248-4a71-9966-4fadeed3036f</NAME>
+        <NAME>${i+1}</NAME>
         <TRANSACTIONTYPE>Cheque/DD</TRANSACTIONTYPE>
         ${item?.BANKNAME && `<BANKNAME>${item?.BANKNAME || ""}</BANKNAME>`}
         ${
