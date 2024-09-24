@@ -219,9 +219,9 @@ ${
   const [jsonData, setJasonData] = useState([
     {
       DATE: "",
-      NARRATION: "",
-      LEDGER: "",
       ACCOUNT: "",
+      LEDGER: "",
+      NARRATION: "",
       AMOUNT: "",
       VCHTYPE: "",
       CHEQUE_NO: "",
