@@ -14,7 +14,7 @@ const ExcelToXmlViewModel = () => {
       let xmlTag = "";
       jsonDataArray?.map((item,i) => {
         xmlTag = `${xmlTag}
-                <TALLYMESSAGE xmlns:UDF="TallyUDF">
+    <TALLYMESSAGE xmlns:UDF="TallyUDF">
      <VOUCHER REMOTEID="${item?.REMOTEID || ""}" VCHKEY="${
           item?.VCHKEY || ""
         }" VCHTYPE="${
