@@ -10,7 +10,7 @@ export const DataList = (props) => {
         {Object.keys(vm?.jsonData?.[0])
           ?.filter(
             (item) =>
-              item === "LEDGER" || item === "AMOUNT" || item === "ACCOUNT"
+              item === "LEDGER" || item === "AMOUNT" || item === "ACCOUNT" || item === "VCHTYPE"
           )
           ?.map((col) => (
             <th
@@ -24,23 +24,75 @@ export const DataList = (props) => {
         <tr>
           {Object.keys(row)?.map((col, ind) => (
             <>
-              {col === "ACCOUNT" && (
+              {col === "VCHTYPE" && (
                 <td
                   style={{
                     borderCollapse: "collapse",
                     border: "1px solid black",
-                    minWidth: "500px",
+                    minWidth: "150px",
                   }}
                 >
                   <Virtualize
                     id={`ID-${col}${i}`}
-                    optionsArray={[...vm?.ledgerList]}
+                    optionsArray={[...vm?.transactionList]}
                     value={row?.[col] || ""}
                     onChange={(e) => {
                       const list = [...vm?.jsonData];
                       const listRow = { ...list?.[i] };
                       listRow[col] =
                         e?.target?.textContent?.split("- ")?.[1] || "";
+                      list[i] = listRow;
+                      vm?.setJasonData(list);
+                    }}
+                    onKeyUp={(e) => {
+                      if (e?.code === "Enter") {
+                        const list = [...vm?.jsonData];
+                        const listRow = { ...list?.[i] };
+                        listRow[col] = e?.target?.value || "";
+                        list[i] = listRow;
+                        vm?.setJasonData(list);
+                        if (i !== vm?.jsonData?.length - 1) {
+                          document.getElementById(`ID-${col}${i + 1}`).focus();
+                        }
+                      } else if (e?.code === "ShiftRight" && i !== 0) {
+                        document.getElementById(`ID-${col}${i - 1}`).focus();
+                      } else if (e?.code === "ArrowLeft" && ind !== 0) {
+                        document
+                          .getElementById(
+                            `ID-${Object.keys(row)?.[ind - 1]}${i}`
+                          )
+                          .focus();
+                      } else if (
+                        e?.code === "ArrowRight" &&
+                        ind !== Object.keys(row)?.length - 1
+                      ) {
+                        document
+                          .getElementById(
+                            `ID-${Object.keys(row)?.[ind + 1]}${i}`
+                          )
+                          .focus();
+                      }
+                    }}
+                  />
+                </td>
+              )}
+              {col === "ACCOUNT" && (
+                <td
+                  style={{
+                    borderCollapse: "collapse",
+                    border: "1px solid black",
+                    minWidth: "150px",
+                  }}
+                >
+                  <Virtualize
+                    id={`ID-${col}${i}`}
+                    optionsArray={[...vm?.accountList]}
+                    value={row?.[col] || ""}
+                    onChange={(e) => {
+                      const list = [...vm?.jsonData];
+                      const listRow = { ...list?.[i] };
+                      listRow[col] =
+                        e?.target?.textContent?.split("- ")?.[2] || "";
                       list[i] = listRow;
                       vm?.setJasonData(list);
                     }}
@@ -92,7 +144,7 @@ export const DataList = (props) => {
                       const list = [...vm?.jsonData];
                       const listRow = { ...list?.[i] };
                       listRow[col] =
-                        e?.target?.textContent?.split("- ")?.[1] || "";
+                        e?.target?.textContent?.split("- ")?.[2] || "";
                       list[i] = listRow;
                       vm?.setJasonData(list);
                     }}

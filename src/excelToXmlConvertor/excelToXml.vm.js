@@ -1,18 +1,28 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import * as XLSX from "xlsx";
-import { partyList } from "./parties";
+import { accounts, ledgers, transaction } from "./parties";
 import dayjs from "dayjs";
 import moment from "moment/moment";
 
 const ExcelToXmlViewModel = () => {
   const [date, setDate] = useState(dayjs);
   const [xmlOutPut, setXmlOutput] = useState(null);
-  const ledgerList = [...partyList?.map((ob) => ob?.DESC_ENG)];
+  const ledgerList = [
+    ...ledgers?.map(
+      (ob) => `${ob?.ALIAS?.replace("(", "").replace(")", "")}- ${ob?.DESC_ENG}`
+    ),
+  ];
+  const accountList = [
+    ...accounts?.map(
+      (ob) => `${ob?.ALIAS?.replace("(", "").replace(")", "")}- ${ob?.DESC_ENG}`
+    ),
+  ];
+  const transactionList = [...transaction?.map((ob) => ob?.DESC_ENG)];
 
   const jsonToXml = (jsonDataArray) => {
     const voucherXmlTag = () => {
       let xmlTag = "";
-      jsonDataArray?.map((item,i) => {
+      jsonDataArray?.map((item, i) => {
         xmlTag = `${xmlTag}
     <TALLYMESSAGE xmlns:UDF="TallyUDF">
      <VOUCHER REMOTEID="${item?.REMOTEID || ""}" VCHKEY="${
@@ -84,8 +94,8 @@ const ExcelToXmlViewModel = () => {
        <LEDGERNAME>${item?.LEDGER || ""}</LEDGERNAME>
        <GSTCLASS/>
        <ISDEEMEDPOSITIVE>${
-        item?.VCHTYPE === "PAYMENT" ? "Yes" : "No"
-      }</ISDEEMEDPOSITIVE>
+         item?.VCHTYPE === "PAYMENT" ? "Yes" : "No"
+       }</ISDEEMEDPOSITIVE>
        <LEDGERFROMITEM>No</LEDGERFROMITEM>
        <REMOVEZEROENTRIES>No</REMOVEZEROENTRIES>
        <ISPARTYLEDGER>Yes</ISPARTYLEDGER>
@@ -114,14 +124,14 @@ const ExcelToXmlViewModel = () => {
        <LEDGERNAME>${item?.ACCOUNT || ""}</LEDGERNAME>
        <GSTCLASS/>
        <ISDEEMEDPOSITIVE>${
-        item?.VCHTYPE === "PAYMENT" ? "No" : "Yes"
-      }</ISDEEMEDPOSITIVE>
+         item?.VCHTYPE === "PAYMENT" ? "No" : "Yes"
+       }</ISDEEMEDPOSITIVE>
        <LEDGERFROMITEM>No</LEDGERFROMITEM>
        <REMOVEZEROENTRIES>No</REMOVEZEROENTRIES>
        <ISPARTYLEDGER>Yes</ISPARTYLEDGER>
        <ISLASTDEEMEDPOSITIVE>${
-        item?.VCHTYPE === "PAYMENT" ? "No" : "Yes"
-      }</ISLASTDEEMEDPOSITIVE>
+         item?.VCHTYPE === "PAYMENT" ? "No" : "Yes"
+       }</ISLASTDEEMEDPOSITIVE>
        <AMOUNT>${
          (item?.VCHTYPE === "PAYMENT" ? 1 : -1) * item?.AMOUNT || ""
        }</AMOUNT>
@@ -130,7 +140,7 @@ ${
     ? `       <BANKALLOCATIONS.LIST>
         <DATE>${item?.DATE || ""}</DATE>
         <INSTRUMENTDATE>${item?.CHEQUE_DATE || ""}</INSTRUMENTDATE>
-        <NAME>${i+1}</NAME>
+        <NAME>${i + 1}</NAME>
         <TRANSACTIONTYPE>Cheque/DD</TRANSACTIONTYPE>
         ${item?.BANKNAME && `<BANKNAME>${item?.BANKNAME || ""}</BANKNAME>`}
         ${
@@ -219,16 +229,36 @@ ${
   const [jsonData, setJasonData] = useState([
     {
       DATE: "",
+      VCHTYPE: "RECEIPT",
       ACCOUNT: "",
       LEDGER: "",
       NARRATION: "",
       AMOUNT: "",
-      VCHTYPE: "",
       CHEQUE_NO: "",
       CHEQUE_DATE: "",
       BANKNAME: "",
       BANKBRANCHNAME: "",
-      NAME: "b8dbf402-9248-4a71-9966-4fadeed3036f", // encoded ? not mandatory?
+      NAME: "", // b8dbf402-9248-4a71-9966-4fadeed3036f encoded ? not mandatory?
+      // REMOTEID: "", "c91b8fc0-df86-11db-aec0-001111bb672d-0002d29e" not mandatory?
+      // VCHKEY: "", "c91b8fc0-df86-11db-aec0-001111bb672d-0000acfe:00000178" not mandatory?
+      // VOUCHERNUMBER: "", 1 // not mandatory?
+      // ALTERID: "",// 197785  // not mandatory ?
+      // MASTERID: "", // 184990 not mandatory
+      // VOUCHERKEY: "", // 190206921671032  not mandatory
+      // UNIQUEREFERENCENUMBER: "", 5vbgkYN0hxqpMDfN // not mandatory
+    },
+    {
+      DATE: "",
+      VCHTYPE: "PAYMENT",
+      ACCOUNT: "",
+      LEDGER: "",
+      NARRATION: "",
+      AMOUNT: "",
+      CHEQUE_NO: "",
+      CHEQUE_DATE: "",
+      BANKNAME: "",
+      BANKBRANCHNAME: "",
+      NAME: "", // b8dbf402-9248-4a71-9966-4fadeed3036f encoded ? not mandatory?
       // REMOTEID: "", "c91b8fc0-df86-11db-aec0-001111bb672d-0002d29e" not mandatory?
       // VCHKEY: "", "c91b8fc0-df86-11db-aec0-001111bb672d-0000acfe:00000178" not mandatory?
       // VOUCHERNUMBER: "", 1 // not mandatory?
@@ -254,11 +284,11 @@ ${
       ...sheetData?.map((item, i) => ({
         "#": i + 1,
         DATE: item?.DATE || null,
-        NARRATION: item?.NARRATION || "",
-        LEDGER: item?.LEDGER || "",
-        ACCOUNT: item?.ACCOUNT || "",
-        AMOUNT: item?.AMOUNT || "",
         VCHTYPE: item?.VCHTYPE || "",
+        ACCOUNT: item?.ACCOUNT || "",
+        LEDGER: item?.LEDGER || "",
+        AMOUNT: item?.AMOUNT || "",
+        NARRATION: item?.NARRATION || "",
         CHEQUE_NO: item?.CHEQUE_NO || "",
         CHEQUE_DATE: item?.CHEQUE_DATE || "",
         BANKNAME: item?.BANKNAME || "",
@@ -278,70 +308,8 @@ ${
     jsonData,
     setJasonData,
     ledgerList,
+    accountList,
+    transactionList,
   };
 };
 export default ExcelToXmlViewModel;
-
-// import { useEffect, useState } from "react";
-// import { xmlFile } from "./datafiles";
-// import xmlFileOE from "./test.xml";
-
-// const AppViewModel = () => {
-//   const string =
-//     "<VOUCHER><REMOTECMPNAME>HASHIM</REMOTECMPNAME><REMOTECMPNAME>HASHIM</REMOTECMPNAME></VOUCHER>";
-
-//   const [run, setRun] = useState(true);
-//   const xmlConvertor = (xmlString) => {
-//     const splitArray = xmlString?.split("<")?.filter((item) => item !== "");
-//     const groupedArray = [];
-//     const grouper = () => {
-//       let parentClaimed;
-//       let index = 0;
-//       let parentTag;
-//       splitArray?.map((item, i) => {
-//         parentClaimed = !parentClaimed && i;
-//         parentTag = splitArray?.[parentClaimed]?.replace(">");
-//         if (!item === `/${parentTag}`) {
-//           if (i !== parentClaimed) {
-//             groupedArray?.[index]?.[parentTag]?.push(item);
-//           } else if (i === parentClaimed) {
-//             groupedArray?.push({ [item?.replace(">")]: [] });
-//           }
-//         } else {
-//           index = index + 1;
-//           parentClaimed = i + 1;
-//           parentTag = splitArray?.[parentClaimed]?.replace(">");
-//         }
-//         return "";
-//       });
-//     };
-//     grouper();
-
-//     const arrayWithoutClosingTag = splitArray?.filter(
-//       (item) => item.split("")?.[0] !== "/"
-//     );
-
-//     const keyValueConstructor = (tags) => {
-//       let resultObj = {};
-//       tags?.map((item1, i) => {
-//         const keyValuePair = {
-//           [i]: { [item1?.split(">")?.[0]]: item1?.split(">")?.[1] },
-//         };
-//         resultObj = { ...resultObj, ...keyValuePair };
-//         return "";
-//       });
-//       return resultObj;
-//     };
-
-//     console.log("===groupedArray", groupedArray);
-//     setRun(false);
-//   };
-
-//   useEffect(() => {
-//     run && xmlConvertor(string);
-//   }, [run]);
-
-//   return {};
-// };
-
-// export default AppViewModel;

@@ -10,16 +10,16 @@ import moment from "moment";
 
 const ExcelToXml = (props) => {
   const { vm } = props;
-  const FileUpload = () => (
-    <div style={{ position: "absolute" }}>
-      <input
-        type="file"
-        onChange={() => {
-          vm?.handleFileUpload();
-        }}
-      />
-    </div>
-  );
+  // const FileUpload = () => (
+  //   <div style={{ position: "absolute" }}>
+  //     <input
+  //       type="file"
+  //       onChange={() => {
+  //         vm?.handleFileUpload();
+  //       }}
+  //     />
+  //   </div>
+  // );
   return (
     <div>
       <div
@@ -43,8 +43,20 @@ const ExcelToXml = (props) => {
           data={[
             {
               DATE: moment(new Date(vm?.date))?.format("YYYYMMDD"),
-              VCHTYPE: "",
-              ACCOUNT:"",
+              VCHTYPE: "Receipt",
+              ACCOUNT: "",
+              LEDGER: "",
+              AMOUNT: "",
+              CHEQUE_NO: "",
+              CHEQUE_DATE: "",
+              BANKNAME: "",
+              BANKBRANCHNAME: "",
+              NARRATION: "",
+            },
+            {
+              DATE: moment(new Date(vm?.date))?.format("YYYYMMDD"),
+              VCHTYPE: "PAYMENT",
+              ACCOUNT: "",
               LEDGER: "",
               AMOUNT: "",
               CHEQUE_NO: "",
