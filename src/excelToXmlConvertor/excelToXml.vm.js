@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
-import { partyList } from "./parties";
+// import { partyList } from "./parties";
+import { trialBalances } from "./trialBalance";
 import dayjs from "dayjs";
 import moment from "moment/moment";
 
 const ExcelToXmlViewModel = () => {
   const [date, setDate] = useState(dayjs);
   const [xmlOutPut, setXmlOutput] = useState(null);
-  const ledgerList = [...partyList?.map((ob) => ob?.DESC_ENG)];
+  const [lookupOpen, setLookupOpen] = useState(false);
+  const ledgerList = [
+    ...trialBalances?.map((ob) => `${ob?.DESC_ENG}-${ob?.BALANCE}`),
+  ];
 
   const jsonToXml = (jsonDataArray) => {
     const voucherXmlTag = () => {
@@ -261,6 +265,9 @@ ${
     jsonData,
     setJasonData,
     ledgerList,
+    lookupOpen,
+    setLookupOpen,
+    trialBalances
   };
 };
 export default ExcelToXmlViewModel;

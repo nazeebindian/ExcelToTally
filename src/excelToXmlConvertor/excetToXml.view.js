@@ -7,6 +7,7 @@ import { DataList } from "./dataList";
 import dayjs from "dayjs";
 import { JsonToExcel } from "react-json-to-excel";
 import moment from "moment";
+import PopupModel, { LookupTable } from "./popupModal";
 
 const ExcelToXml = (props) => {
   const { vm } = props;
@@ -82,6 +83,7 @@ const ExcelToXml = (props) => {
         )}
       </div>
       <DataList vm={vm} />
+
     </div>
   );
 };
