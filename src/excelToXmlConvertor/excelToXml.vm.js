@@ -95,7 +95,7 @@ const ExcelToXmlViewModel = () => {
          item?.VCHTYPE === "PAYMENT" ? "Yes" : "No"
        }</ISLASTDEEMEDPOSITIVE>
        <AMOUNT>${
-         (item?.VCHTYPE === "PAYMENT" ? -1 : 1) * item?.AMOUNT || ""
+         (item?.VCHTYPE === "PAYMENT" ? -1*Number(item?.AMOUNT) : Number(item?.AMOUNT))
        }</AMOUNT>
        <BANKALLOCATIONS.LIST>       </BANKALLOCATIONS.LIST>
        <BILLALLOCATIONS.LIST>       </BILLALLOCATIONS.LIST>
@@ -121,7 +121,7 @@ const ExcelToXmlViewModel = () => {
        <ISPARTYLEDGER>Yes</ISPARTYLEDGER>
        <ISLASTDEEMEDPOSITIVE>Yes</ISLASTDEEMEDPOSITIVE>
        <AMOUNT>${
-         (item?.VCHTYPE === "PAYMENT" ? 1 : -1) * item?.AMOUNT || ""
+         (item?.VCHTYPE === "PAYMENT" ? 1*Number(item?.AMOUNT) : -1*Number(item?.AMOUNT))
        }</AMOUNT>
 ${
   item?.CHEQUE_NO
@@ -147,7 +147,7 @@ ${
         <ISSPLIT>No</ISSPLIT>
         <ISCONTRACTUSED>No</ISCONTRACTUSED>
         <AMOUNT>${
-          (item?.VCHTYPE === "PAYMENT" ? 1 : -1) * item?.AMOUNT || ""
+         (item?.VCHTYPE === "PAYMENT" ? 1*Number(item?.AMOUNT) : -1*Number(item?.AMOUNT))
         }</AMOUNT>
         <CONTRACTDETAILS.LIST>        </CONTRACTDETAILS.LIST>
        </BANKALLOCATIONS.LIST>
