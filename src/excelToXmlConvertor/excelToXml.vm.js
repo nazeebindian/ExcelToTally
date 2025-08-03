@@ -30,11 +30,9 @@ const ExcelToXmlViewModel = () => {
       jsonDataArray?.map((item) => {
         xmlTag = `${xmlTag}
                 <TALLYMESSAGE xmlns:UDF="TallyUDF">
-     <VOUCHER REMOTEID="${item?.REMOTEID || ""}" VCHKEY="${
-          item?.VCHKEY || ""
-        }" VCHTYPE="${
-          item?.VCHTYPE || ""
-        }" ACTION="Create" OBJVIEW="Accounting Voucher View">
+     <VOUCHER REMOTEID="${item?.REMOTEID || ""}" VCHKEY="${item?.VCHKEY || ""
+          }" VCHTYPE="${item?.VCHTYPE || ""
+          }" ACTION="Create" OBJVIEW="Accounting Voucher View">
       <OLDAUDITENTRYIDS.LIST TYPE="Number">
        <OLDAUDITENTRYIDS>-1</OLDAUDITENTRYIDS>
       </OLDAUDITENTRYIDS.LIST>
@@ -98,18 +96,15 @@ const ExcelToXmlViewModel = () => {
        </OLDAUDITENTRYIDS.LIST>
        <LEDGERNAME>${item?.LEDGER || ""}</LEDGERNAME>
        <GSTCLASS/>
-       <ISDEEMEDPOSITIVE>${
-         item?.VCHTYPE === "PAYMENT" ? "Yes" : "No"
-       }</ISDEEMEDPOSITIVE>
+       <ISDEEMEDPOSITIVE>${item?.VCHTYPE === "PAYMENT" ? "Yes" : "No"
+          }</ISDEEMEDPOSITIVE>
        <LEDGERFROMITEM>No</LEDGERFROMITEM>
        <REMOVEZEROENTRIES>No</REMOVEZEROENTRIES>
-       <ISPARTYLEDGER>${Object.values(accountList)?.includes(item?.LEDGER)?'No':'Yes'}</ISPARTYLEDGER>
-       <ISLASTDEEMEDPOSITIVE>${
-         item?.VCHTYPE === "PAYMENT" ? "Yes" : "No"
-       }</ISLASTDEEMEDPOSITIVE>
-       <AMOUNT>${
-         (item?.VCHTYPE === "PAYMENT" ? -1*Number(item?.AMOUNT) : Number(item?.AMOUNT))
-       }</AMOUNT>
+       <ISPARTYLEDGER>${Object.values(accountList)?.includes(item?.LEDGER) ? 'No' : 'Yes'}</ISPARTYLEDGER>
+       <ISLASTDEEMEDPOSITIVE>${item?.VCHTYPE === "PAYMENT" ? "Yes" : "No"
+          }</ISLASTDEEMEDPOSITIVE>
+       <AMOUNT>${(item?.VCHTYPE === "PAYMENT" ? -1 * Number(item?.AMOUNT) : Number(item?.AMOUNT))
+          }</AMOUNT>
        <BANKALLOCATIONS.LIST>       </BANKALLOCATIONS.LIST>
        <BILLALLOCATIONS.LIST>       </BILLALLOCATIONS.LIST>
        <INTERESTCOLLECTION.LIST>       </INTERESTCOLLECTION.LIST>
@@ -128,49 +123,42 @@ const ExcelToXmlViewModel = () => {
        </OLDAUDITENTRYIDS.LIST>
        <LEDGERNAME>${item?.ACCOUNT || ""}</LEDGERNAME>
        <GSTCLASS/>
-       <ISDEEMEDPOSITIVE>${
-         item?.VCHTYPE === "PAYMENT" ? "No" : "Yes"
-       }</ISDEEMEDPOSITIVE>
+       <ISDEEMEDPOSITIVE>${item?.VCHTYPE === "PAYMENT" ? "No" : "Yes"
+          }</ISDEEMEDPOSITIVE>
        <LEDGERFROMITEM>No</LEDGERFROMITEM>
        <REMOVEZEROENTRIES>No</REMOVEZEROENTRIES>
        <ISPARTYLEDGER>Yes</ISPARTYLEDGER>
-       <ISLASTDEEMEDPOSITIVE>${
-         item?.VCHTYPE === "PAYMENT" ? "No" : "Yes"
-       }</ISLASTDEEMEDPOSITIVE>
-       <AMOUNT>${
-         (item?.VCHTYPE === "PAYMENT" ? 1*Number(item?.AMOUNT) : -1*Number(item?.AMOUNT))
-       }</AMOUNT>
-${
-  item?.CHEQUE_NO
-    ? `       <BANKALLOCATIONS.LIST>
+       <ISLASTDEEMEDPOSITIVE>${item?.VCHTYPE === "PAYMENT" ? "No" : "Yes"
+          }</ISLASTDEEMEDPOSITIVE>
+       <AMOUNT>${(item?.VCHTYPE === "PAYMENT" ? 1 * Number(item?.AMOUNT) : -1 * Number(item?.AMOUNT))
+          }</AMOUNT>
+${item?.CHEQUE_NO
+            ? `       <BANKALLOCATIONS.LIST>
         <DATE>${item?.DATE || ""}</DATE>
         <INSTRUMENTDATE>${item?.CHEQUE_DATE || ""}</INSTRUMENTDATE>
         <NAME>b8dbf402-9248-4a71-9966-4fadeed3036f</NAME>
         <TRANSACTIONTYPE>Cheque/DD</TRANSACTIONTYPE>
         ${item?.BANKNAME && `<BANKNAME>${item?.BANKNAME || ""}</BANKNAME>`}
-        ${
-          item?.BANKBRANCHNAME &&
-          `<BANKBRANCHNAME>${item?.BANKBRANCHNAME || ""}</BANKBRANCHNAME>`
-        }
+        ${item?.BANKBRANCHNAME &&
+            `<BANKBRANCHNAME>${item?.BANKBRANCHNAME || ""}</BANKBRANCHNAME>`
+            }
         <PAYMENTFAVOURING>${item?.LEDGER || ""}</PAYMENTFAVOURING>
         <INSTRUMENTNUMBER>${item?.CHEQUE_NO || ""}</INSTRUMENTNUMBER>
-        <UNIQUEREFERENCENUMBER>${
-          item?.UNIQUEREFERENCENUMBER || ""
-        }</UNIQUEREFERENCENUMBER>
+        <UNIQUEREFERENCENUMBER>${item?.UNIQUEREFERENCENUMBER || ""
+            }</UNIQUEREFERENCENUMBER>
         <STATUS>No</STATUS>
         <PAYMENTMODE>Transacted</PAYMENTMODE>
         <BANKPARTYNAME>${item?.LEDGER || ""}</BANKPARTYNAME>
         <ISCONNECTEDPAYMENT>No</ISCONNECTEDPAYMENT>
         <ISSPLIT>No</ISSPLIT>
         <ISCONTRACTUSED>No</ISCONTRACTUSED>
-        <AMOUNT>${
-         (item?.VCHTYPE === "PAYMENT" ? 1*Number(item?.AMOUNT) : -1*Number(item?.AMOUNT))
-        }</AMOUNT>
+        <AMOUNT>${(item?.VCHTYPE === "PAYMENT" ? 1 * Number(item?.AMOUNT) : -1 * Number(item?.AMOUNT))
+            }</AMOUNT>
         <CONTRACTDETAILS.LIST>        </CONTRACTDETAILS.LIST>
        </BANKALLOCATIONS.LIST>
 `
-    : `<BANKALLOCATIONS.LIST>       </BANKALLOCATIONS.LIST>`
-}
+            : `<BANKALLOCATIONS.LIST>       </BANKALLOCATIONS.LIST>`
+          }
        <BILLALLOCATIONS.LIST>       </BILLALLOCATIONS.LIST>
        <INTERESTCOLLECTION.LIST>       </INTERESTCOLLECTION.LIST>
        <OLDAUDITENTRIES.LIST>       </OLDAUDITENTRIES.LIST>
@@ -233,16 +221,16 @@ ${
       CHEQUE_DATE: "",
       BANKNAME: "",
       BANKBRANCHNAME: "",
-      ACCOUNT:"",
-      NAME: "b8dbf402-9248-4a71-9966-4fadeed3036f", // encoded ? not mandatory?
-      // REMOTEID: "", "c91b8fc0-df86-11db-aec0-001111bb672d-0002d29e" not mandatory?
-      // VCHKEY: "", "c91b8fc0-df86-11db-aec0-001111bb672d-0000acfe:00000178" not mandatory?
-      // VOUCHERNUMBER: "", 1 // not mandatory?
-      // ALTERID: "",// 197785  // not mandatory ?
-      // MASTERID: "", // 184990 not mandatory
-      // VOUCHERKEY: "", // 190206921671032  not mandatory
-      // UNIQUEREFERENCENUMBER: "", 5vbgkYN0hxqpMDfN // not mandatory
-    },
+      ACCOUNT: "",
+    }
+    // NAME: "b8dbf402-9248-4a71-9966-4fadeed3036f", // encoded ? not mandatory?
+    // REMOTEID: "", "c91b8fc0-df86-11db-aec0-001111bb672d-0002d29e" not mandatory?
+    // VCHKEY: "", "c91b8fc0-df86-11db-aec0-001111bb672d-0000acfe:00000178" not mandatory?
+    // VOUCHERNUMBER: "", 1 // not mandatory?
+    // ALTERID: "",// 197785  // not mandatory ?
+    // MASTERID: "", // 184990 not mandatory
+    // VOUCHERKEY: "", // 190206921671032  not mandatory
+    // UNIQUEREFERENCENUMBER: "", 5vbgkYN0hxqpMDfN // not mandatory
   ]);
   const [selectedFile, setSelectedFile] = useState();
 
@@ -272,6 +260,22 @@ ${
       })),
     ]);
   };
+
+  const lastAmount = () => jsonData?.[jsonData?.length - 1]?.AMOUNT; // filter((item) => !!item)?.join('');
+  useEffect(() => {
+    if (!!lastAmount()) {
+      setJasonData((prev) => ([...prev, {
+        ...prev?.[prev?.length - 1],
+        NARRATION: "",
+        LEDGER: "",
+        AMOUNT: "",
+        CHEQUE_NO: "",
+        CHEQUE_DATE: "",
+        BANKNAME: "",
+        BANKBRANCHNAME: "",
+      }]))
+    }
+  }, [jsonData])
 
   return {
     jsonToXml,

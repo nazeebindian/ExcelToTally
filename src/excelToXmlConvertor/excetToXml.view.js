@@ -26,12 +26,12 @@ const downloadExcel = () => {
 
 export default function ExcelToXml({ vm }) {
   return (
-    <div style={{ maxWidth: 700, margin: 'auto', padding: 20 }}>
+    <div style={{ maxWidth: '90%', margin: 'auto' }}>
       <Typography variant="h5" fontWeight={700} mb={4} textAlign="center">
         Excel to Tally XML Converter
       </Typography>
 
-      {/* Step 1: Select Date
+      {/* Step 1: Select Date */}
       <Card variant="outlined" sx={{ mb: 3 }}>
         <CardContent>
           <Typography variant="h6" mb={2}>
@@ -47,14 +47,14 @@ export default function ExcelToXml({ vm }) {
             />
           </LocalizationProvider>
         </CardContent>
-      </Card> */}
+      </Card>
 
-      {/* Step 1: Download Template */}
-      <Card variant="outlined" sx={{ mb: 3 }}>
+      {/* Step 2: Download Template */}
+      {/* <Card variant="outlined" sx={{ mb: 3 }}>
         <CardContent>
           <Typography variant="h6" mb={2}>
             <CloudDownloadIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-            Step 1: Download Template (Optional)
+            Step 2: Download Template (Optional)
           </Typography>
           <Button
             variant="outlined"
@@ -64,26 +64,26 @@ export default function ExcelToXml({ vm }) {
             Download Excel Template
           </Button>
         </CardContent>
-      </Card>
+      </Card> */}
 
-      {/* Step 2: Upload Excel */}
-      <Card variant="outlined" sx={{ mb: 3 }}>
+      {/* Step 3: Upload Excel */}
+      {/* <Card variant="outlined" sx={{ mb: 3 }}>
         <CardContent>
           <Typography variant="h6" mb={2}>
             <UploadFileIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-            Step 2: Upload Excel File
+            Step 3: Upload Excel File
           </Typography>
           <ExcelDropzone onDrop={vm?.handleFileUpload} />
 
         </CardContent>
-      </Card>
+      </Card> */}
 
-      {/* Step 3: Convert to XML */}
+      {/* Step 4: Convert to XML */}
       <Card variant="outlined" sx={{ mb: 3 }}>
         <CardContent>
           <Typography variant="h6" mb={2}>
             <FileDownloadDoneIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-            Step 3: Convert to XML
+            Step 4: Convert to XML
           </Typography>
           <Button
             variant="contained"
@@ -110,7 +110,8 @@ export default function ExcelToXml({ vm }) {
       </Card>
 
       {/* Optional: Show parsed data */}
-       <DataList vm={vm} />
+      <div style={{ width: '100%', overflow: 'auto' }}>
+        <DataList vm={vm} /></div>
     </div>
   );
 }

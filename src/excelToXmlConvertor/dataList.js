@@ -5,15 +5,11 @@ import { LookupTable } from "./popupModal";
 
 export const DataList = (props) => {
   const { vm } = props;
-  const columns = [
-    { header: "Ledger", accessorKey: "DESC_ENG" },
-    { header: "Balance", accessorKey: "BALANCE" },
-  ];
   return (
     <Table style={{ borderCollapse: "collapse", border: "1px solid black" }}>
       <tr>
         {Object.keys(vm?.jsonData?.[0])
-          ?.filter((item) => item === "LEDGER" || item === "AMOUNT")
+          // ?.filter((item) => item === "LEDGER" || item === "AMOUNT")
           ?.map((col) => (
             <th
               style={{ borderCollapse: "collapse", border: "1px solid black" }}
@@ -144,7 +140,60 @@ export const DataList = (props) => {
                   /> */}
                 </td>
               )}
-              {col === "AMOUNT" && (
+              {col !== "LEDGER" && (
+                <td
+                  style={{
+                    borderCollapse: "collapse",
+                    border: "1px solid black",
+                    minWidth:'200px'                    
+                  }}
+                >
+                  <TextField
+                    fullWidth
+                    id={`ID-${col}${i}`}
+                    size="small"
+                    value={row?.[col] || ""}
+                    onKeyUp={(e) => {
+                      if (
+                        e?.code === "Enter" &&
+                        i !== vm?.jsonData?.length - 1
+                      ) {
+                        document.getElementById(`ID-${col}${i + 1}`).focus();
+                      } else if (e?.code === "ArrowUp" && i !== 0) {
+                        document.getElementById(`ID-${col}${i - 1}`).focus();
+                      } else if (
+                        e?.code === "ArrowDown" &&
+                        i !== vm?.jsonData?.length - 1
+                      ) {
+                        document.getElementById(`ID-${col}${i + 1}`).focus();
+                      } else if (e?.code === "ArrowLeft" && ind !== 0) {
+                        document
+                          .getElementById(
+                            `ID-${Object.keys(row)?.[ind - 1]}${i}`
+                          )
+                          .focus();
+                      } else if (
+                        e?.code === "ArrowRight" &&
+                        ind !== Object.keys(row)?.length - 1
+                      ) {
+                        document
+                          .getElementById(
+                            `ID-${Object.keys(row)?.[ind + 1]}${i}`
+                          )
+                          .focus();
+                      }
+                    }}
+                    onChange={(e) => {
+                      const list = [...vm?.jsonData];
+                      const listRow = { ...list?.[i] };
+                      listRow[col] = e?.target?.value || "";
+                      list[i] = listRow;
+                      vm?.setJasonData(list);
+                    }}
+                  />
+                </td>
+              )}
+              {/* {col === "AMOUNT" && (
                 <td
                   style={{
                     borderCollapse: "collapse",
@@ -195,7 +244,7 @@ export const DataList = (props) => {
                     }}
                   />
                 </td>
-              )}
+              )} */}
             </>
           ))}
         </tr>
