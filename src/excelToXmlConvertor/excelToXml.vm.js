@@ -5,6 +5,16 @@ import { trialBalances } from "./trialBalance";
 import dayjs from "dayjs";
 import moment from "moment/moment";
 import { accountList } from "./parties";
+import excelFile from "./excel-template.xlsx"
+
+export const downloadExcel = () => {
+  const link = document.createElement('a');
+  link.href = excelFile;
+  link.download = 'report.xlsx';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
 const ExcelToXmlViewModel = () => {
   const [date, setDate] = useState(dayjs);

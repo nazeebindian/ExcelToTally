@@ -1,13 +1,18 @@
 import { Button } from "@mui/material";
-import ExcelToXmlViewModel from "./excelToXml.vm";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DataList } from "./dataList";
-import dayjs from "dayjs";
-import { JsonToExcel } from "react-json-to-excel";
-import moment from "moment";
-import PopupModel, { LookupTable } from "./popupModal";
+import excelFile from "./excel-template.xlsx"
+
+const downloadExcel = () => {
+  const link = document.createElement('a');
+  link.href = excelFile;
+  link.download = 'report.xlsx';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
 const ExcelToXml = (props) => {
   const { vm } = props;
@@ -39,24 +44,10 @@ const ExcelToXml = (props) => {
           />
         </LocalizationProvider>
         <div style={{ height: "20px" }} />
-        <JsonToExcel
-          title="Download as Excel"
-          data={[
-            {
-              DATE: moment(new Date(vm?.date))?.format("YYYYMMDD"),
-              NARRATION: "",
-              LEDGER: "",
-              AMOUNT: "",
-              VCHTYPE: "",
-              CHEQUE_NO: "",
-              CHEQUE_DATE: "",
-              BANKNAME: "",
-              BANKBRANCHNAME: "",
-            },
-          ]}
-          fileName={`${moment(new Date(vm?.date))?.format("YYYYMMDD")}`}
-          btnClassName="custom-classname"
-        />
+        <Button
+          variant="contained"
+          onClick={downloadExcel}>Download Excel</Button>
+
         <div style={{ height: "20px" }} />
         <input
           type="file"
@@ -64,7 +55,6 @@ const ExcelToXml = (props) => {
             vm?.handleFileUpload(e);
           }}
         />
-        {/* {vm?.selectedFile && <p>Selected file: {vm?.selectedFile.name}</p>} */}
         <Button
           variant="contained"
           sx={{ my: 5 }}
