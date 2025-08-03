@@ -34,7 +34,7 @@ export const DataList = (props) => {
                     minWidth: "500px",
                   }}
                 >
-                  {/* <Virtualize
+                  <Virtualize
                     id={`ID-${col}${i}`}
                     optionsArray={[...vm?.ledgerList]}
                     value={row?.[col] || ""}
@@ -75,8 +75,8 @@ export const DataList = (props) => {
                           .focus();
                       }
                     }}
-                  /> */}
-                  <TextField
+                  />
+                  {/* <TextField
                     fullWidth
                     value={row?.[col] || ""}
                     onKeyUp={(e) => {
@@ -141,7 +141,7 @@ export const DataList = (props) => {
                       vm?.setLookupOpen(false);
                     }}
                     data={vm?.trialBalances}
-                  />
+                  /> */}
                 </td>
               )}
               {col === "AMOUNT" && (

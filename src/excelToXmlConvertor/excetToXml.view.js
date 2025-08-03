@@ -110,7 +110,7 @@ export default function ExcelToXml({ vm }) {
       </Card>
 
       {/* Optional: Show parsed data */}
-      {/* <DataList vm={vm} /> */}
+       <DataList vm={vm} />
     </div>
   );
 }
