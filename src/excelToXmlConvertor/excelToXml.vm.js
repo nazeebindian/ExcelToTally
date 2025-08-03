@@ -222,6 +222,7 @@ ${
       CHEQUE_DATE: "",
       BANKNAME: "",
       BANKBRANCHNAME: "",
+      ACCOUNT:"",
       NAME: "b8dbf402-9248-4a71-9966-4fadeed3036f", // encoded ? not mandatory?
       // REMOTEID: "", "c91b8fc0-df86-11db-aec0-001111bb672d-0002d29e" not mandatory?
       // VCHKEY: "", "c91b8fc0-df86-11db-aec0-001111bb672d-0000acfe:00000178" not mandatory?
@@ -256,6 +257,7 @@ ${
         CHEQUE_DATE: item?.CHEQUE_DATE || "",
         BANKNAME: item?.BANKNAME || "",
         BANKBRANCHNAME: item?.BANKBRANCHNAME || "",
+        ACCOUNT: item?.ACCOUNT || "",
       })),
     ]);
   };
