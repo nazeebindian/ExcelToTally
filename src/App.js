@@ -45,7 +45,7 @@ export default function App() {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      {/* <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -53,7 +53,7 @@ export default function App() {
         >
           <Tab label="Home" {...a11yProps(0)} />
         </Tabs>
-      </Box>
+      </Box> */}
       <CustomTabPanel value={value} index={0}>
         <ExcelToXml vm={vm} />
       </CustomTabPanel>
