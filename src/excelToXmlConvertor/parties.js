@@ -4482,3 +4482,10 @@ export const partyList = [
   { DESC_ENG: "ZEIT IMPEX JAYARAJ JOTHI" },
   { DESC_ENG: "ZENITH BUILDING MATERIAL PANTHEERANKAV" },
 ];
+
+export const accountList = [
+  { DESC_ENG: "BILL" },
+  { DESC_ENG: "AC CASH" },
+  { DESC_ENG: "HDFC" },
+  { DESC_ENG: "GOODS RETERN" }
+];

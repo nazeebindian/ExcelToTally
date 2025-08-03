@@ -4,6 +4,7 @@ import * as XLSX from "xlsx";
 import { trialBalances } from "./trialBalance";
 import dayjs from "dayjs";
 import moment from "moment/moment";
+import { accountList } from "./parties";
 
 const ExcelToXmlViewModel = () => {
   const [date, setDate] = useState(dayjs);
@@ -85,14 +86,14 @@ const ExcelToXmlViewModel = () => {
        <OLDAUDITENTRYIDS.LIST TYPE="Number">
         <OLDAUDITENTRYIDS>-1</OLDAUDITENTRYIDS>
        </OLDAUDITENTRYIDS.LIST>
-       <LEDGERNAME>${item?.ACCOUNT || ""}</LEDGERNAME>
+       <LEDGERNAME>${item?.LEDGER || ""}</LEDGERNAME>
        <GSTCLASS/>
        <ISDEEMEDPOSITIVE>${
          item?.VCHTYPE === "PAYMENT" ? "Yes" : "No"
        }</ISDEEMEDPOSITIVE>
        <LEDGERFROMITEM>No</LEDGERFROMITEM>
        <REMOVEZEROENTRIES>No</REMOVEZEROENTRIES>
-       <ISPARTYLEDGER>No</ISPARTYLEDGER>
+       <ISPARTYLEDGER>${Object.values(accountList)?.includes(item?.LEDGER)?'No':'Yes'}</ISPARTYLEDGER>
        <ISLASTDEEMEDPOSITIVE>${
          item?.VCHTYPE === "PAYMENT" ? "Yes" : "No"
        }</ISLASTDEEMEDPOSITIVE>
@@ -115,7 +116,7 @@ const ExcelToXmlViewModel = () => {
        <OLDAUDITENTRYIDS.LIST TYPE="Number">
         <OLDAUDITENTRYIDS>-1</OLDAUDITENTRYIDS>
        </OLDAUDITENTRYIDS.LIST>
-       <LEDGERNAME>${item?.LEDGER || ""}</LEDGERNAME>
+       <LEDGERNAME>${item?.ACCOUNT || ""}</LEDGERNAME>
        <GSTCLASS/>
        <ISDEEMEDPOSITIVE>${
          item?.VCHTYPE === "PAYMENT" ? "No" : "Yes"
