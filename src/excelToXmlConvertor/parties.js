@@ -4484,8 +4484,11 @@ export const partyList = [
 ];
 
 export const accountList = [
-  { DESC_ENG: "BILL" },
   { DESC_ENG: "AC CASH" },
+  { DESC_ENG: "BILL" },
+  { DESC_ENG: "Cash" },
+  { DESC_ENG: "GOODS RETERN" },
+  { DESC_ENG: "CENTRAL BANK OF INDIA" },
+  { DESC_ENG: "CHEQE RETERN" },
   { DESC_ENG: "HDFC" },
-  { DESC_ENG: "GOODS RETERN" }
 ];
